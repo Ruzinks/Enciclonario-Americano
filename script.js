@@ -1,6 +1,5 @@
 // Base de datos panamericana de Enciclonario Americano
 const database = [
-  // --- ARTÍCULOS ENCICLOPÉDICOS ---
   {
     id: 1,
     mode: "wiki",
@@ -82,40 +81,6 @@ const database = [
     body: "Vía de navegación interoceánica entre el océano Pacífico y el mar Caribe que atraviesa el istmo de Panamá. Cambió el comercio mundial al acortar drásticamente las rutas marítimas."
   },
   {
-    id: 11,
-    mode: "wiki",
-    country: "uru",
-    title: "Sol de Mayo",
-    category: "Símbolos Patrios e Historia",
-    body: "Representación figurativa del sol incaico con rostro humano. Aparece en las banderas nacionales de Uruguay y Argentina como símbolo de libertad e independencia criolla."
-  },
-  {
-    id: 12,
-    mode: "wiki",
-    country: "arg",
-    title: "Glaciar Perito Moreno",
-    category: "Naturaleza y Recursos Naturales",
-    body: "Grueso cuerpo de hielo situado en el Parque Nacional Los Glaciares en Argentina. Es mundialmente famoso por su constante avance y el majestuoso espectáculo de rupturas de sus bóvedas."
-  },
-  {
-    id: 13,
-    mode: "wiki",
-    country: "mex",
-    title: "Chichén Itzá",
-    category: "Arqueología e Historia",
-    body: "Importante centro ceremonial maya en la península de Yucatán. Destaca la pirámide de Kukulkán, donde durante los equinoccios se proyecta un fenómeno de luz y sombra en forma de serpiente."
-  },
-  {
-    id: 14,
-    mode: "wiki",
-    country: "col",
-    title: "Palma de Cera del Quindío",
-    category: "Flora y Ecología",
-    body: "Árbol nacional de Colombia que habita en los bosques de niebla de los Andes. Es la especie de palmera más alta del mundo, alcanzando hasta 60 metros de altura."
-  },
-
-  // --- DICCIONARIO HISPANOAMERICANO ---
-  {
     id: 101,
     mode: "rae",
     country: "uru",
@@ -162,64 +127,88 @@ const database = [
     title: "Pololo, la",
     category: "sust. m. y f. chi. coloq.",
     body: "1. Novio o novia informal. Persona con la que se mantiene una relación de noviazgo o afinidad afectiva."
-  },
-  {
-    id: 107,
-    mode: "rae",
-    country: "ven",
-    title: "Chamo, ma",
-    category: "sust. m. y f. ven. coloq.",
-    body: "1. Niño, joven o muchacho. Expresión cariñosa o coloquial popularizada en Venezuela."
-  },
-  {
-    id: 108,
-    mode: "rae",
-    country: "ecu",
-    title: "Pana",
-    category: "sust. m. y f. ecu. y ven. coloq.",
-    body: "1. Persona que tiene una relación de amistad sincera o compañerismo con otra."
-  },
-  {
-    id: 109,
-    mode: "rae",
-    country: "bol",
-    title: "Cuate",
-    category: "sust. m. bol. y mex. coloq.",
-    body: "1. Amigo o compañero íntimo. También utilizado para referirse a personas gemelas o mellizas."
-  },
-  {
-    id: 110,
-    mode: "rae",
-    country: "cam",
-    title: "Chilo, la / Nítido, da",
-    category: "adj. cam. coloq.",
-    body: "1. Algo bonito, excelente, de buena calidad o agradable al gusto de quien lo observa."
   }
 ];
 
 let currentMode = 'wiki';
+let favorites = JSON.parse(localStorage.getItem('ea_favorites')) || [];
 
-// Cambiar de sección desde el menú
+// --- GESTIÓN DE TEMAS VISUALES ---
+function setTheme(theme) {
+  document.body.classList.remove('theme-sepia', 'theme-dark');
+  document.querySelectorAll('.theme-btn').forEach(btn => btn.classList.remove('active'));
+
+  if (theme === 'sepia') {
+    document.body.classList.add('theme-sepia');
+    document.getElementById('themeSepia').classList.add('active');
+  } else if (theme === 'dark') {
+    document.body.classList.add('theme-dark');
+    document.getElementById('themeDark').classList.add('active');
+  } else {
+    document.getElementById('themeLight').classList.add('active');
+  }
+
+  localStorage.setItem('ea_theme', theme);
+}
+
+// Cargar tema guardado
+const savedTheme = localStorage.getItem('ea_theme') || 'light';
+setTheme(savedTheme);
+
+// --- CAMBIO DE MODOS / VISTAS ---
 function setMode(mode) {
   currentMode = mode;
   document.getElementById('btnWiki').classList.toggle('active', mode === 'wiki');
   document.getElementById('btnRae').classList.toggle('active', mode === 'rae');
+  document.getElementById('btnFavs').classList.toggle('active', mode === 'favs');
 
   const titleEl = document.getElementById('sectionTitle');
   const descEl = document.getElementById('sectionDescription');
+  const controlsBar = document.getElementById('controlsBar');
 
   if (mode === 'wiki') {
+    controlsBar.style.display = 'flex';
     titleEl.textContent = 'Enciclopedia de América';
     descEl.textContent = 'Artículos didácticos y detallados sobre geografía, historia, símbolos y culturas del continente.';
-  } else {
+  } else if (mode === 'rae') {
+    controlsBar.style.display = 'flex';
     titleEl.textContent = 'Diccionario Hispanoamericano';
     descEl.textContent = 'Definiciones léxicas, modismos y expresiones propias de los países de habla hispana aprobadas para uso educativo.';
+  } else if (mode === 'favs') {
+    controlsBar.style.display = 'none';
+    titleEl.textContent = 'Mi Lista de Estudio (Favoritos)';
+    descEl.textContent = 'Artículos y términos que has guardado en tu navegador para revisar más tarde.';
   }
 
   filterContent();
 }
 
-// Motor de búsqueda y filtrado dinámico
+// --- GESTIÓN DE FAVORITOS ---
+function toggleFavorite(id) {
+  if (favorites.includes(id)) {
+    favorites = favorites.filter(favId => favId !== id);
+  } else {
+    favorites.push(id);
+  }
+  localStorage.setItem('ea_favorites', JSON.stringify(favorites));
+  filterContent();
+}
+
+// --- LECTURA DE VOZ (TEXT-TO-SPEECH) ---
+function speakText(title, body) {
+  if ('speechSynthesis' in window) {
+    window.speechSynthesis.cancel(); // Detener lecturas previas
+    const textToRead = `${title}. ${body}`;
+    const utterance = new SpeechSynthesisUtterance(textToRead);
+    utterance.lang = 'es-ES';
+    utterance.rate = 0.9; // Velocidad pausada e instruccional
+    window.speechSynthesis.speak(utterance);
+  } else {
+    alert('Tu navegador no soporta la función de lectura de voz.');
+  }
+}
+
+// --- FILTRADO Y RENDERIZADO ---
 function filterContent() {
   const query = document.getElementById('searchInput').value.toLowerCase().trim();
   const selectedCountry = document.getElementById('countrySelect').value;
@@ -227,53 +216,63 @@ function filterContent() {
 
   grid.innerHTML = '';
 
-  const filtered = database.filter(item => {
-    const matchesMode = item.mode === currentMode;
-    const matchesCountry = selectedCountry === 'todos' || item.country === selectedCountry;
-    
-    // El buscador filtra por título, descripción/cuerpo o categoría
-    const matchesSearch = item.title.toLowerCase().includes(query) ||
-                          item.body.toLowerCase().includes(query) ||
-                          item.category.toLowerCase().includes(query);
+  let filtered = database;
 
-    return matchesMode && matchesCountry && matchesSearch;
-  });
+  if (currentMode === 'favs') {
+    filtered = database.filter(item => favorites.includes(item.id));
+  } else {
+    filtered = database.filter(item => {
+      const matchesMode = item.mode === currentMode;
+      const matchesCountry = selectedCountry === 'todos' || item.country === selectedCountry;
+      const matchesSearch = item.title.toLowerCase().includes(query) ||
+                            item.body.toLowerCase().includes(query) ||
+                            item.category.toLowerCase().includes(query);
+
+      return matchesMode && matchesCountry && matchesSearch;
+    });
+  }
 
   if (filtered.length === 0) {
+    const emptyMsg = currentMode === 'favs' 
+      ? 'Aún no has guardado ningún término en tu lista de estudio. ¡Haz clic en la estrella para guardar los que quieras!' 
+      : 'No se encontraron artículos ni definiciones coincidentes.';
+      
     grid.innerHTML = `
-      <div style="text-align: center; color: #54595d; padding: 40px 20px; font-family: sans-serif;">
-        <span class="material-symbols-outlined" style="font-size: 3rem; color: #a2a9b1;">search_off</span>
-        <p style="margin-top: 10px; font-size: 1.1rem;">No se encontraron artículos ni definiciones coincidentes.</p>
-        <p style="font-size: 0.9rem; color: #72777d;">Prueba buscando otra palabra clave o cambiando el país seleccionado.</p>
+      <div style="text-align: center; color: var(--text-muted); padding: 40px 20px; font-family: sans-serif;">
+        <span class="material-symbols-outlined" style="font-size: 3rem;">search_off</span>
+        <p style="margin-top: 10px; font-size: 1.1rem;">${emptyMsg}</p>
       </div>`;
     return;
   }
 
   const countryNames = {
-    uru: 'Uruguay',
-    arg: 'Argentina',
-    mex: 'México',
-    col: 'Colombia',
-    per: 'Perú',
-    chi: 'Chile',
-    ven: 'Venezuela',
-    ecu: 'Ecuador',
-    bol: 'Bolivia',
-    cam: 'Centroamérica y Caribe'
+    uru: 'Uruguay', arg: 'Argentina', mex: 'México', col: 'Colombia',
+    per: 'Perú', chi: 'Chile', ven: 'Venezuela', ecu: 'Ecuador',
+    bol: 'Bolivia', cam: 'Centroamérica y Caribe'
   };
 
   filtered.forEach(item => {
     const card = document.createElement('article');
     const isWiki = item.mode === 'wiki';
+    const isFav = favorites.includes(item.id);
     
     card.className = `entry-card ${isWiki ? 'wiki' : 'rae'}`;
-
     const countryLabel = countryNames[item.country] || 'América';
 
     card.innerHTML = `
       <div class="card-top">
-        <h3 class="card-title">${item.title}</h3>
-        <span class="country-tag">${countryLabel}</span>
+        <div class="card-title-box">
+          <h3 class="card-title">${item.title}</h3>
+          <span class="country-tag">${countryLabel}</span>
+        </div>
+        <div class="card-controls">
+          <button class="icon-btn" onclick="speakText('${item.title.replace(/'/g, "\\'")}', '${item.body.replace(/'/g, "\\'")}')" title="Escuchar pronunciación">
+            <span class="material-symbols-outlined">volume_up</span>
+          </button>
+          <button class="icon-btn ${isFav ? 'active-fav' : ''}" onclick="toggleFavorite(${item.id})" title="${isFav ? 'Quitar de favoritos' : 'Guardar en mi lista'}">
+            <span class="material-symbols-outlined">${isFav ? 'star' : 'star_border'}</span>
+          </button>
+        </div>
       </div>
       <div class="card-category">${item.category}</div>
       <p class="card-body">${item.body}</p>
@@ -283,7 +282,7 @@ function filterContent() {
   });
 }
 
-// Modal informativo del pie de página
+// Modal Informativo
 function openAboutModal() {
   document.getElementById('aboutModal').classList.add('active');
 }
@@ -299,5 +298,5 @@ window.addEventListener('click', (e) => {
   }
 });
 
-// Carga inicial
+// Carga Inicial
 filterContent();
