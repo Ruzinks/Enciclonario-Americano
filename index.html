@@ -9,7 +9,7 @@
 
   <title>Enciclonario Americano</title>
   <link rel="stylesheet" href="styles.css">
-  <!-- Google Material Symbols e Iconos -->
+  <!-- Google Material Symbols -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
 </head>
 <body>
@@ -21,18 +21,36 @@
         <h1>Enciclonario Americano</h1>
         <span class="subbrand">Enciclopedia & Diccionario Léxico Panamericano</span>
       </div>
-      <div class="safe-badge">
-        <span class="material-symbols-outlined icon-small">verified</span> Contenido Académico y Fiel para Niños
+      
+      <!-- Selector de Temas Visuales -->
+      <div class="header-actions">
+        <div class="theme-selector">
+          <button class="theme-btn active" id="themeLight" onclick="setTheme('light')" title="Modo Claro">
+            <span class="material-symbols-outlined">light_mode</span>
+          </button>
+          <button class="theme-btn" id="themeSepia" onclick="setTheme('sepia')" title="Modo Sepia (Lectura)">
+            <span class="material-symbols-outlined">auto_stories</span>
+          </button>
+          <button class="theme-btn" id="themeDark" onclick="setTheme('dark')" title="Modo Oscuro">
+            <span class="material-symbols-outlined">dark_mode</span>
+          </button>
+        </div>
+        <div class="safe-badge">
+          <span class="material-symbols-outlined icon-small">verified</span> Contenido Seguro
+        </div>
       </div>
     </div>
 
-    <!-- Menú Principal: Conexión Enciclopedia + Diccionario -->
+    <!-- Menú Principal -->
     <nav class="main-menu">
       <button class="menu-btn active" id="btnWiki" onclick="setMode('wiki')">
-        <span class="material-symbols-outlined">menu_book</span> Enciclopedia de América
+        <span class="material-symbols-outlined">menu_book</span> Enciclopedia
       </button>
       <button class="menu-btn" id="btnRae" onclick="setMode('rae')">
-        <span class="material-symbols-outlined">auto_stories</span> Diccionario Hispanoamericano
+        <span class="material-symbols-outlined">auto_stories</span> Diccionario
+      </button>
+      <button class="menu-btn" id="btnFavs" onclick="setMode('favs')">
+        <span class="material-symbols-outlined">star</span> Mi Lista de Estudio
       </button>
     </nav>
   </header>
@@ -40,7 +58,7 @@
   <main class="container">
 
     <!-- Buscador y Filtros por País -->
-    <section class="controls-bar">
+    <section class="controls-bar" id="controlsBar">
       <div class="search-box">
         <span class="material-symbols-outlined search-icon">search</span>
         <input type="text" id="searchInput" placeholder="Buscar por término, historia, geografía o concepto..." oninput="filterContent()">
@@ -69,9 +87,7 @@
     </section>
 
     <!-- Grilla de Entradas -->
-    <section class="content-grid" id="contentGrid">
-      <!-- Se genera mediante script.js -->
-    </section>
+    <section class="content-grid" id="contentGrid"></section>
 
   </main>
 
