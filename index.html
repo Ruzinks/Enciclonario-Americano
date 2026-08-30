@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Enciclonario Americano</title>
+  <link rel="stylesheet" href="styles.css">
+  <!-- Google Material Symbols e Iconos -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+</head>
+<body>
+
+  <!-- Encabezado Institucional -->
+  <header class="header">
+    <div class="header-content">
+      <div class="brand">
+        <h1>Enciclonario Americano</h1>
+        <span class="subbrand">Enciclopedia & Diccionario Léxico Panamericano</span>
+      </div>
+      <div class="safe-badge">
+        <span class="material-symbols-outlined icon-small">verified</span> Contenido Académico y Fiel para Niños
+      </div>
+    </div>
+
+    <!-- Menú Principal: Conexión Enciclopedia + Diccionario -->
+    <nav class="main-menu">
+      <button class="menu-btn active" id="btnWiki" onclick="setMode('wiki')">
+        <span class="material-symbols-outlined">menu_book</span> Enciclopedia de América
+      </button>
+      <button class="menu-btn" id="btnRae" onclick="setMode('rae')">
+        <span class="material-symbols-outlined">auto_stories</span> Diccionario Hispanoamericano
+      </button>
+    </nav>
+  </header>
+
+  <main class="container">
+
+    <!-- Buscador y Filtros por País -->
+    <section class="controls-bar">
+      <div class="search-box">
+        <span class="material-symbols-outlined search-icon">search</span>
+        <input type="text" id="searchInput" placeholder="Buscar por término, historia, geografía o concepto..." oninput="filterContent()">
+      </div>
+      <div class="country-box">
+        <select id="countrySelect" onchange="filterContent()">
+          <option value="todos">Todos los países / América</option>
+          <option value="uru">Uruguay</option>
+          <option value="arg">Argentina</option>
+          <option value="mex">México</option>
+          <option value="col">Colombia</option>
+          <option value="per">Perú</option>
+          <option value="chi">Chile</option>
+          <option value="ven">Venezuela</option>
+          <option value="ecu">Ecuador</option>
+          <option value="bol">Bolivia</option>
+          <option value="cam">Centroamérica y Caribe</option>
+        </select>
+      </div>
+    </section>
+
+    <!-- Cartel Dinámico de la Sección -->
+    <section class="section-info">
+      <h2 id="sectionTitle">Enciclopedia de América</h2>
+      <p id="sectionDescription">Artículos didácticos y detallados sobre geografía, historia, símbolos y culturas del continente.</p>
+    </section>
+
+    <!-- Grilla de Entradas -->
+    <section class="content-grid" id="contentGrid">
+      <!-- Se genera mediante script.js -->
+    </section>
+
+  </main>
+
+  <!-- Pie de página con enlaces e información -->
+  <footer class="footer">
+    <div class="footer-links">
+      <button class="footer-btn" onclick="openAboutModal()">
+        <span class="material-symbols-outlined icon-small">info</span> Sobre Enciclonario Americano
+      </button>
+    </div>
+    <p class="footer-copy">Se seguirá actualizando | Clearline</p>
+  </footer>
+
+  <!-- Ventana Modal de Información -->
+  <div id="aboutModal" class="modal-overlay">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Sobre Enciclonario Americano</h2>
+        <button class="close-btn" onclick="closeAboutModal()">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p><strong>Enciclonario Americano</strong> es una plataforma educativa integral desarrollada para reunir el conocimiento enciclopédico y la riqueza léxica de todos los países hispanohablantes de América.</p>
+        <p>Su objetivo es proporcionar material confiable, respetuoso y didáctico adaptado para estudiantes y niños de todas las edades.</p>
+        <hr class="modal-divider">
+        <h3>Desarrollo y Creación</h3>
+        <p>Proyecto diseñado y creado por <strong>Clearline</strong>, enfocado en brindar herramientas web y soluciones digitales de acceso libre y seguro.</p>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
