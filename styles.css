@@ -1,3 +1,40 @@
+:root {
+  --bg-color: #f8f9fa;
+  --card-bg: #ffffff;
+  --text-main: #202122;
+  --text-muted: #54595d;
+  --border-color: #a2a9b1;
+  --header-bg: #722f37;
+  --header-border: #4a1d22;
+  --btn-menu-bg: #57232a;
+  --btn-menu-hover: #ffffff;
+  --btn-menu-hover-text: #722f37;
+}
+
+/* Modo Sepia (Lectura) */
+body.theme-sepia {
+  --bg-color: #f4ecd8;
+  --card-bg: #fbf0d9;
+  --text-main: #3b2e2b;
+  --text-muted: #625043;
+  --border-color: #d3c4a8;
+  --header-bg: #5c3023;
+  --header-border: #3d1f17;
+  --btn-menu-bg: #47251b;
+}
+
+/* Modo Oscuro */
+body.theme-dark {
+  --bg-color: #121212;
+  --card-bg: #1e1e1e;
+  --text-main: #e0e0e0;
+  --text-muted: #a0a0a0;
+  --border-color: #333333;
+  --header-bg: #2d1317;
+  --header-border: #1a0a0c;
+  --btn-menu-bg: #210d10;
+}
+
 * {
   box-sizing: border-box;
   margin: 0;
@@ -5,13 +42,14 @@
 }
 
 body {
-  background-color: #f8f9fa;
-  color: #202122;
+  background-color: var(--bg-color);
+  color: var(--text-main);
   font-family: 'Georgia', 'Linux Libertine', 'Times New Roman', serif;
   line-height: 1.6;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  transition: background-color 0.3s, color 0.3s;
 }
 
 .material-symbols-outlined {
@@ -23,12 +61,12 @@ body {
   font-size: 1rem;
 }
 
-/* Encabezado Académico RAE / Wikipedia */
+/* Encabezado */
 .header {
-  background-color: #722f37; /* Borravino estilo RAE */
+  background-color: var(--header-bg);
   color: #ffffff;
   padding: 20px 15px;
-  border-bottom: 4px solid #4a1d22;
+  border-bottom: 4px solid var(--header-border);
 }
 
 .header-content {
@@ -52,6 +90,36 @@ body {
   opacity: 0.9;
 }
 
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  flex-wrap: wrap;
+}
+
+.theme-selector {
+  display: flex;
+  gap: 5px;
+  background-color: rgba(0, 0, 0, 0.2);
+  padding: 3px;
+  border-radius: 4px;
+}
+
+.theme-btn {
+  background: none;
+  border: none;
+  color: #ffffff;
+  padding: 4px 8px;
+  border-radius: 3px;
+  cursor: pointer;
+  opacity: 0.7;
+}
+
+.theme-btn.active, .theme-btn:hover {
+  opacity: 1;
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
 .safe-badge {
   background-color: #28a745;
   color: white;
@@ -65,18 +133,19 @@ body {
   gap: 5px;
 }
 
-/* Menú de Modos */
+/* Menú Principal */
 .main-menu {
   max-width: 1000px;
   margin: 0 auto;
   display: flex;
   gap: 10px;
+  flex-wrap: wrap;
 }
 
 .menu-btn {
-  background-color: #57232a;
+  background-color: var(--btn-menu-bg);
   color: #ffffff;
-  border: 1px solid #4a1d22;
+  border: 1px solid var(--header-border);
   padding: 8px 16px;
   border-radius: 3px;
   cursor: pointer;
@@ -89,8 +158,8 @@ body {
 }
 
 .menu-btn.active, .menu-btn:hover {
-  background-color: #ffffff;
-  color: #722f37;
+  background-color: var(--btn-menu-hover);
+  color: var(--btn-menu-hover-text);
   border-color: #ffffff;
 }
 
@@ -102,7 +171,7 @@ body {
   flex: 1;
 }
 
-/* Controles de Búsqueda y Filtro */
+/* Búsqueda y Filtros */
 .controls-bar {
   display: flex;
   gap: 15px;
@@ -120,13 +189,15 @@ body {
 .search-icon {
   position: absolute;
   left: 10px;
-  color: #722f37;
+  color: var(--header-bg);
 }
 
 .search-box input {
   width: 100%;
   padding: 10px 12px 10px 35px;
-  border: 1px solid #a2a9b1;
+  border: 1px solid var(--border-color);
+  background-color: var(--card-bg);
+  color: var(--text-main);
   border-radius: 2px;
   font-size: 1rem;
   font-family: sans-serif;
@@ -140,29 +211,29 @@ body {
 .country-box select {
   width: 100%;
   padding: 10px 12px;
-  border: 1px solid #a2a9b1;
+  border: 1px solid var(--border-color);
   border-radius: 2px;
   font-size: 0.95rem;
   font-family: sans-serif;
-  background-color: #ffffff;
+  background-color: var(--card-bg);
+  color: var(--text-main);
   cursor: pointer;
 }
 
 /* Sección Informativa */
 .section-info {
-  border-bottom: 2px solid #a2a9b1;
+  border-bottom: 2px solid var(--border-color);
   padding-bottom: 8px;
   margin-bottom: 20px;
 }
 
 .section-info h2 {
   font-size: 1.5rem;
-  color: #000000;
   font-weight: normal;
 }
 
 .section-info p {
-  color: #54595d;
+  color: var(--text-muted);
   font-size: 0.9rem;
   font-family: sans-serif;
 }
@@ -176,43 +247,74 @@ body {
 }
 
 .entry-card {
-  background: #ffffff;
-  border: 1px solid #a2a9b1;
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
   padding: 20px;
   border-radius: 2px;
+  position: relative;
 }
 
-/* Estilo Enciclopedia */
 .entry-card.wiki {
   border-left: 5px solid #366292;
 }
 
-/* Estilo Diccionario */
 .entry-card.rae {
-  border-left: 5px solid #722f37;
+  border-left: 5px solid var(--header-bg);
 }
 
 .card-top {
   display: flex;
   justify-content: space-between;
-  align-items: baseline;
-  border-bottom: 1px solid #eaecf0;
+  align-items: center;
+  border-bottom: 1px solid var(--border-color);
   padding-bottom: 6px;
   margin-bottom: 10px;
 }
 
+.card-title-box {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
 .card-title {
   font-size: 1.4rem;
-  color: #000000;
   font-weight: normal;
+}
+
+.card-controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.icon-btn {
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.icon-btn:hover {
+  color: var(--header-bg);
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+.icon-btn.active-fav {
+  color: #f39c12;
 }
 
 .country-tag {
   font-family: sans-serif;
   font-size: 0.8rem;
-  color: #54595d;
-  background-color: #f8f9fa;
-  border: 1px solid #c8ccd1;
+  color: var(--text-muted);
+  background-color: var(--bg-color);
+  border: 1px solid var(--border-color);
   padding: 2px 8px;
   border-radius: 2px;
   font-weight: 500;
@@ -220,14 +322,14 @@ body {
 
 .card-category {
   font-style: italic;
-  color: #54595d;
+  color: var(--text-muted);
   font-size: 0.9rem;
   margin-bottom: 8px;
 }
 
 .card-body {
   font-size: 1rem;
-  color: #202122;
+  color: var(--text-main);
   text-align: justify;
 }
 
@@ -235,11 +337,11 @@ body {
 .footer {
   text-align: center;
   padding: 20px 15px;
-  background-color: #eaecf0;
-  border-top: 1px solid #a2a9b1;
+  background-color: var(--card-bg);
+  border-top: 1px solid var(--border-color);
   font-family: sans-serif;
   font-size: 0.85rem;
-  color: #54595d;
+  color: var(--text-muted);
   margin-top: auto;
   display: flex;
   flex-direction: column;
@@ -250,7 +352,7 @@ body {
 .footer-btn {
   background: none;
   border: none;
-  color: #722f37;
+  color: var(--header-bg);
   cursor: pointer;
   font-family: sans-serif;
   font-size: 0.9rem;
@@ -261,11 +363,7 @@ body {
   gap: 4px;
 }
 
-.footer-btn:hover {
-  color: #4a1d22;
-}
-
-/* Modal Estilo Solucionario/Información */
+/* Modal */
 .modal-overlay {
   display: none;
   position: fixed;
@@ -285,18 +383,18 @@ body {
 }
 
 .modal-content {
-  background-color: #ffffff;
+  background-color: var(--card-bg);
   border-radius: 2px;
   max-width: 500px;
   width: 100%;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
   overflow: hidden;
-  border: 1px solid #a2a9b1;
+  border: 1px solid var(--border-color);
 }
 
 .modal-header {
   padding: 15px 20px;
-  background-color: #722f37;
+  background-color: var(--header-bg);
   color: white;
   display: flex;
   justify-content: space-between;
@@ -321,7 +419,7 @@ body {
   padding: 20px;
   font-family: sans-serif;
   font-size: 0.95rem;
-  color: #202122;
+  color: var(--text-main);
 }
 
 .modal-body p {
@@ -331,11 +429,11 @@ body {
 .modal-divider {
   margin: 15px 0;
   border: 0;
-  border-top: 1px solid #eaecf0;
+  border-top: 1px solid var(--border-color);
 }
 
 .modal-body h3 {
   font-size: 1rem;
-  color: #722f37;
+  color: var(--header-bg);
   margin-bottom: 8px;
 }
