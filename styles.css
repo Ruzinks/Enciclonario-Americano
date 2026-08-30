@@ -52,6 +52,23 @@ body {
   transition: background-color 0.4s ease, color 0.4s ease;
 }
 
+/* Bloqueo de selección para iconos, botones y elementos interactivos */
+.material-symbols-outlined,
+.theme-btn,
+.menu-btn,
+.icon-btn,
+.safe-badge,
+.country-tag,
+.brand,
+.footer-btn,
+.close-btn {
+  -webkit-user-select: none; /* Safari / Chrome en iOS y Android */
+  -moz-user-select: none;    /* Firefox */
+  -ms-user-select: none;     /* IE / Edge */
+  user-select: none;         /* Estándar moderno */
+  -webkit-touch-callout: none; /* Desactiva el menú contextual en iOS al presionar */
+}
+
 .material-symbols-outlined {
   vertical-align: middle;
   font-size: 1.3rem;
@@ -114,7 +131,7 @@ body {
   background: none;
   border: none;
   color: #ffffff;
-  padding: 8px 12px; /* Mayor superficie táctil */
+  padding: 8px 12px;
   border-radius: 4px;
   cursor: pointer;
   opacity: 0.65;
@@ -170,7 +187,7 @@ body {
   align-items: center;
   gap: 6px;
   transition: all 0.2s ease;
-  flex: 1; /* Distribución uniforme en pantallas pequeñas */
+  flex: 1;
   justify-content: center;
   min-width: 130px;
 }
@@ -318,7 +335,7 @@ body {
   border: none;
   color: var(--text-muted);
   cursor: pointer;
-  padding: 8px; /* Área táctil optimizada */
+  padding: 8px;
   border-radius: 50%;
   display: inline-flex;
   align-items: center;
@@ -432,7 +449,7 @@ body {
   to { opacity: 1; transform: translateY(0); }
 }
 
-/* --- REGLAS ESPECÍFICAS PARA MÓVILES (MEDIA QUERIES) --- */
+/* Reglas Adaptativas para Celulares */
 @media (max-width: 600px) {
   .header-content {
     flex-direction: column;
