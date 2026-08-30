@@ -65,6 +65,54 @@ const database = [
     category: "Biodiversidad y Ecología",
     body: "Archipiélago volcánico del océano Pacífico perteneciente a Ecuador. Famoso por su amplia variedad de especies endémicas que sirvieron de base para la teoría de la evolución de Charles Darwin."
   },
+  {
+    id: 9,
+    mode: "wiki",
+    country: "bol",
+    title: "Salar de Uyuni",
+    category: "Geografía y Geología",
+    body: "El desierto de sal continuo y alto más grande del mundo, situado en Bolivia. Es un importante depósito de litio y genera un impresionante efecto espejo fotográfico durante la época de lluvias."
+  },
+  {
+    id: 10,
+    mode: "wiki",
+    country: "cam",
+    title: "Canal de Panamá",
+    category: "Ingeniería e Historia",
+    body: "Vía de navegación interoceánica entre el océano Pacífico y el mar Caribe que atraviesa el istmo de Panamá. Cambió el comercio mundial al acortar drásticamente las rutas marítimas."
+  },
+  {
+    id: 11,
+    mode: "wiki",
+    country: "uru",
+    title: "Sol de Mayo",
+    category: "Símbolos Patrios e Historia",
+    body: "Representación figurativa del sol incaico con rostro humano. Aparece en las banderas nacionales de Uruguay y Argentina como símbolo de libertad e independencia criolla."
+  },
+  {
+    id: 12,
+    mode: "wiki",
+    country: "arg",
+    title: "Glaciar Perito Moreno",
+    category: "Naturaleza y Recursos Naturales",
+    body: "Grueso cuerpo de hielo situado en el Parque Nacional Los Glaciares en Argentina. Es mundialmente famoso por su constante avance y el majestuoso espectáculo de rupturas de sus bóvedas."
+  },
+  {
+    id: 13,
+    mode: "wiki",
+    country: "mex",
+    title: "Chichén Itzá",
+    category: "Arqueología e Historia",
+    body: "Importante centro ceremonial maya en la península de Yucatán. Destaca la pirámide de Kukulkán, donde durante los equinoccios se proyecta un fenómeno de luz y sombra en forma de serpiente."
+  },
+  {
+    id: 14,
+    mode: "wiki",
+    country: "col",
+    title: "Palma de Cera del Quindío",
+    category: "Flora y Ecología",
+    body: "Árbol nacional de Colombia que habita en los bosques de niebla de los Andes. Es la especie de palmera más alta del mundo, alcanzando hasta 60 metros de altura."
+  },
 
   // --- DICCIONARIO HISPANOAMERICANO ---
   {
@@ -114,6 +162,38 @@ const database = [
     title: "Pololo, la",
     category: "sust. m. y f. chi. coloq.",
     body: "1. Novio o novia informal. Persona con la que se mantiene una relación de noviazgo o afinidad afectiva."
+  },
+  {
+    id: 107,
+    mode: "rae",
+    country: "ven",
+    title: "Chamo, ma",
+    category: "sust. m. y f. ven. coloq.",
+    body: "1. Niño, joven o muchacho. Expresión cariñosa o coloquial popularizada en Venezuela."
+  },
+  {
+    id: 108,
+    mode: "rae",
+    country: "ecu",
+    title: "Pana",
+    category: "sust. m. y f. ecu. y ven. coloq.",
+    body: "1. Persona que tiene una relación de amistad sincera o compañerismo con otra."
+  },
+  {
+    id: 109,
+    mode: "rae",
+    country: "bol",
+    title: "Cuate",
+    category: "sust. m. bol. y mex. coloq.",
+    body: "1. Amigo o compañero íntimo. También utilizado para referirse a personas gemelas o mellizas."
+  },
+  {
+    id: 110,
+    mode: "rae",
+    country: "cam",
+    title: "Chilo, la / Nítido, da",
+    category: "adj. cam. coloq.",
+    body: "1. Algo bonito, excelente, de buena calidad o agradable al gusto de quien lo observa."
   }
 ];
 
@@ -139,7 +219,7 @@ function setMode(mode) {
   filterContent();
 }
 
-// Filtrado de búsquedas y países
+// Motor de búsqueda y filtrado dinámico
 function filterContent() {
   const query = document.getElementById('searchInput').value.toLowerCase().trim();
   const selectedCountry = document.getElementById('countrySelect').value;
@@ -150,6 +230,8 @@ function filterContent() {
   const filtered = database.filter(item => {
     const matchesMode = item.mode === currentMode;
     const matchesCountry = selectedCountry === 'todos' || item.country === selectedCountry;
+    
+    // El buscador filtra por título, descripción/cuerpo o categoría
     const matchesSearch = item.title.toLowerCase().includes(query) ||
                           item.body.toLowerCase().includes(query) ||
                           item.category.toLowerCase().includes(query);
@@ -158,7 +240,12 @@ function filterContent() {
   });
 
   if (filtered.length === 0) {
-    grid.innerHTML = '<p style="text-align: center; color: #54595d; font-style: italic; padding: 20px;">No se encontraron artículos ni definiciones coincidentes con los filtros seleccionados.</p>';
+    grid.innerHTML = `
+      <div style="text-align: center; color: #54595d; padding: 40px 20px; font-family: sans-serif;">
+        <span class="material-symbols-outlined" style="font-size: 3rem; color: #a2a9b1;">search_off</span>
+        <p style="margin-top: 10px; font-size: 1.1rem;">No se encontraron artículos ni definiciones coincidentes.</p>
+        <p style="font-size: 0.9rem; color: #72777d;">Prueba buscando otra palabra clave o cambiando el país seleccionado.</p>
+      </div>`;
     return;
   }
 
